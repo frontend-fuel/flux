@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MessageApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div id="toast-container"></div>
+
+    <!-- Auth View -->
+    <section id="auth-view" class="view">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>MessageApp</h1>
+            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="text" id="login-username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Admin Dashboard View -->
+    <section id="admin-view" class="view hidden">
+        <header class="app-header">
+            <div class="header-top">
+                <h2>MessageApp</h2>
+                <div class="header-icons">
+                    <i class="fas fa-search"></i>
+                    <i class="fas fa-user-plus" id="open-create-user" title="Add New User"></i>
+                    <i class="fas fa-ellipsis-v" id="admin-menu-btn"></i>
+                </div>
+            </div>
+            <div class="tab-bar">
+                <div class="tab-btn active" data-tab="users" style="flex: 1; border-bottom: 3px solid white;">CHATS
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div id="tab-users" class="tab-view">
+                <div class="user-list" id="user-list">
+                    <!-- User items injected natively -->
+                </div>
+            </div>
+
+            <!-- Create User Tab (Hidden by default) -->
+            <div id="tab-create-user" class="tab-view hidden" style="padding: 30px;">
+                <div
+                    style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="margin-bottom: 20px; color: var(--wa-teal);">Create User Account</h3>
+                    <form id="create-user-form">
+                        <div class="input-group">
+                            <input type="text" id="new-username" placeholder="Username" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="new-password" placeholder="Temporary Password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Create User</button>
+                        <button type="button" class="btn-primary" id="cancel-create-user"
+                            style="background: #ccc; margin-top: 10px;">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <div class="fab" id="admin-logout-trigger">
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+
+        <!-- Chat View inside Admin -->
+        <div id="tab-chat-admin" class="chat-view hidden">
+            <header class="chat-header">
+                <div class="back-btn" id="back-to-users"><i class="fas fa-arrow-left"></i></div>
+                <div class="chat-user-info">
+                    <div class="chat-user-avatar"><i class="fas fa-user"></i></div>
+                    <div class="chat-user-details">
+                        <h4 id="chat-with-username">Contact Name</h4>
+                        <p id="admin-chat-status">online</p>
+                    </div>
+                </div>
+                <div class="chat-header-icons">
+                    <i class="fas fa-video" id="admin-btn-start-video"></i>
+                    <i class="fas fa-phone" id="admin-btn-start-call"></i>
+                    <i class="fas fa-ellipsis-v"></i>
+                </div>
+            </header>
+
+            <main class="messages-area" id="admin-messages-area">
+                <!-- Messages -->
+            </main>
+
+            <div id="admin-emoji-picker-container" class="hidden"
+                style="position: absolute; bottom: 70px; left: 10px; right: 10px; background: white; border-radius: 15px; box-shadow: 0 -2px 15px rgba(0,0,0,0.1); padding: 15px; z-index: 500; height: 250px; overflow-y: auto;">
+                <div id="admin-emoji-grid"
+                    style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; font-size: 1.5rem; text-align: center; cursor: pointer;">
+                    <!-- Emojis injected here -->
+                </div>
+            </div>
+
+            <footer class="chat-input-bar">
+                <div class="input-container">
+                    <i class="far fa-laugh" id="admin-emoji-trigger"></i>
+                    <input type="text" id="admin-message-input" placeholder="Message">
+                    <i class="fas fa-paperclip"></i>
+                    <i class="fas fa-camera"></i>
+                </div>
+                <button class="mic-btn" id="admin-send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <!-- User View Dashboard -->
+    <section id="user-view" class="view hidden">
+        <div class="chat-view">
+            <header class="chat-header">
+                <div class="chat-user-info" style="padding-left: 10px;">
+                    <div class="chat-user-avatar"><i class="fas fa-user-shield" style="color: var(--wa-teal);"></i>
+                    </div>
+                    <div class="chat-user-details">
+                        <h4 id="user-display-name">Support</h4>
+                        <p id="admin-status-text">online</p>
+                    </div>
+                </div>
+                <div class="chat-header-icons">
+                    <i class="fas fa-video" id="btn-start-video"></i>
+                    <i class="fas fa-phone" id="btn-start-call"></i>
+                    <i class="fas fa-ellipsis-v" id="logout-btn-user"></i>
+                </div>
+            </header>
+
+            <main class="messages-area" id="user-messages-area">
+                <!-- Messages -->
+            </main>
+
+            <div id="emoji-picker-container" class="hidden"
+                style="position: absolute; bottom: 70px; left: 10px; right: 10px; background: white; border-radius: 15px; box-shadow: 0 -2px 15px rgba(0,0,0,0.1); padding: 15px; z-index: 500; height: 250px; overflow-y: auto;">
+                <div id="emoji-grid"
+                    style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; font-size: 1.5rem; text-align: center; cursor: pointer;">
+                    <!-- Emojis injected here -->
+                </div>
+            </div>
+
+            <footer class="chat-input-bar">
+                <div class="input-container">
+                    <i class="far fa-laugh" id="emoji-trigger"></i>
+                    <input type="text" id="user-message-input" placeholder="Message">
+                    <i class="fas fa-paperclip"></i>
+                    <i class="fas fa-camera"></i>
+                </div>
+                <button class="mic-btn" id="user-send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </footer>
+        </div>
+    </section>
+
+    <!-- WhatsApp Call UI Modal -->
+    <div id="call-modal" class="wa-modal hidden">
+        <div class="wa-call-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="wa-call-info">
+            <h2 id="call-username">Contact Name</h2>
+            <p id="call-status">WhatsApp Call</p>
+        </div>
+
+        <div id="video-container" class="hidden"
+            style="width: 100%; height: 100%; position: absolute; inset: 0; background: #000; z-index: -1;">
+            <video id="remote-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+            <video id="local-video" autoplay playsinline muted
+                style="width: 100px; height: 150px; position: absolute; top: 20px; right: 20px; border-radius: 10px; object-fit: cover; border: 2px solid white;"></video>
+        </div>
+
+        <div class="wa-call-actions">
+            <button id="btn-mute-mic" class="wa-btn-circle hidden" style="background: rgba(255,255,255,0.2);"><i
+                    class="fas fa-microphone"></i></button>
+            <button id="btn-reject-call" class="wa-btn-circle wa-btn-danger"><i class="fas fa-phone-slash"></i></button>
+            <button id="btn-answer-call" class="wa-btn-circle wa-btn-success"><i class="fas fa-phone"></i></button>
+            <button id="btn-end-call" class="wa-btn-circle wa-btn-danger hidden"><i
+                    class="fas fa-phone-slash"></i></button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/webrtc.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
